@@ -1,0 +1,19 @@
+{
+  "name": "node_docker_dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "NODE_ENV=prod node app.js",
+    "dev": "NODE_ENV=dev nodemon --legacy-watch --inspect=0.0.0.0:9229 app.js"
+  },
+  "author": "Javier González de Lope",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "redis": "^3.0.2"
+  }
+}

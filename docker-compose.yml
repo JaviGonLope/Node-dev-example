@@ -1,0 +1,29 @@
+version: '3'
+services: 
+  app: # app service definition
+    image: node:14.15.1-alpine3.12
+    command: sh -c "npm install && ${COMMAND:-npm run dev}"
+    ports: 
+      - '3005:3005'
+      - '9229:9229' # Forward this port to accept debug connections
+    working_dir: /usr/src/app # directory where initial command should be executed
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - my-local-nw # join the network defined below
+    depends_on: 
+      - redis-server 
+
+  redis-server: # Redis service definition
+    image: redis:5.0.5-alpine
+    command: ["redis-server","--appendonly", "yes", "--save", "60", "1", "--save", "5", "1", "--auto-aof-rewrite-min-size", "64mb"] # modify default command
+    networks:
+      - my-local-nw # join the network defined below
+    volumes:
+      - redis-data:/data
+
+volumes: # define volume where redis data should be stored
+  redis-data: # name of the volume; if empty it uses the default driver (local)
+
+networks: # define network which connects the services
+  my-local-nw: # name of the network; if empty it uses the default driver (bridge)
